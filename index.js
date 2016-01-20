@@ -6,5 +6,7 @@ wss.on('connection', function connection(ws) {
     console.log('received: %s', message);
   });
 
-  ws.send('something');
+  for (var i = 0; i < 100; i++) {
+      ws.send('something');
+  }
 });

@@ -16,9 +16,17 @@ class TestClass : WebSocketDelegate {
         ws.connect()
     }
     
+    deinit {
+        print("test class being deinit")
+    }
+    
     func websocketDidConnect(socket: WebSocket) {
         print("did connect")
+        for i in 0..<10 {
+            ws.writeString("\(i)")
+        }
         ws.writeString("hello")
+        ws.disconnect()
         test = nil
     }
     
