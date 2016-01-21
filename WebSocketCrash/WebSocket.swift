@@ -138,6 +138,20 @@ public class WebSocket : NSObject, NSStreamDelegate {
         optionalProtocols = protocols
     }
     
+    deinit {
+        if let stream = inputStream {
+            CFReadStreamSetDispatchQueue(stream, nil)
+            stream.close()
+        }
+        if let stream = outputStream {
+            CFWriteStreamSetDispatchQueue(stream, nil)
+            stream.close()
+        }
+        
+        inputStream = nil
+        outputStream = nil
+    }
+    
     ///Connect to the websocket server on a background thread
     public func connect() {
         guard !isCreated else { return }
