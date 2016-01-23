@@ -139,6 +139,12 @@ public class WebSocket : NSObject, NSStreamDelegate {
     }
     
     deinit {
+        // Totally not what we'd want to do, but this triggers the same type of
+        // crash that we're looking to stop
+        doDisconnect(nil)
+        
+        inputStream?.delegate = nil
+        outputStream?.delegate = nil
         if let stream = inputStream {
             CFReadStreamSetDispatchQueue(stream, nil)
             stream.close()
@@ -147,7 +153,6 @@ public class WebSocket : NSObject, NSStreamDelegate {
             CFWriteStreamSetDispatchQueue(stream, nil)
             stream.close()
         }
-        
         inputStream = nil
         outputStream = nil
     }

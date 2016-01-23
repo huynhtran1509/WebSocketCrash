@@ -22,12 +22,10 @@ class TestClass : WebSocketDelegate {
     
     func websocketDidConnect(socket: WebSocket) {
         print("did connect")
-        for i in 0..<10 {
+        for i in 0..<100 {
             ws.writeString("\(i)")
         }
-        ws.writeString("hello")
-        ws.disconnect()
-        test = nil
+        ws.writeString("end burst")
     }
     
     func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
@@ -39,6 +37,10 @@ class TestClass : WebSocketDelegate {
     }
     
     func websocketDidReceiveMessage(socket: WebSocket, text: String) {
+        if text == "kill" {
+            test = nil
+        }
+        
         print("Got message: \(text)")
     }
 }
